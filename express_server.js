@@ -27,11 +27,20 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
+  var randString = generateRandomString();
   // console.log(req.body);
   // console.log(req.body.longURL);
-  urlDatabase[generateRandomString()] = req.body.longURL;
-  // console.log(urlDatabase) debug statement to see POST parameters
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  urlDatabase[randString] = req.body.longURL;
+  // console.log(urlDatabase)   //debug statement!
+  res.redirect(`/urls/${randString}`);
+  res.statusCode = 307
+
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  let longURL = urlDatabase[req.params.shortURL];
+  // console.log(longURL);  // debug statement!
+  res.redirect(longURL);
 });
 
 app.get("/urls/:id", (req, res) => {
