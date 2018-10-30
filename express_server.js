@@ -33,14 +33,17 @@ app.post("/urls", (req, res) => {
   urlDatabase[randString] = req.body.longURL;
   // console.log(urlDatabase)   //debug statement!
   res.redirect(`/urls/${randString}`);
-  res.statusCode = 307
 
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  let longURL = urlDatabase[req.params.shortURL];
+  if (!existanceChecker(urlDatabase, req.params.shortURL)) {
+    res.send(`404 error, this doesn't exist yet! I do like your ${req.params.shortURL} though!`);
+  } else {
+    let longURL = urlDatabase[req.params.shortURL];
   // console.log(longURL);  // debug statement!
-  res.redirect(longURL);
+    res.redirect(longURL);
+  }
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -67,4 +70,6 @@ app.listen(PORT, () => {
       return r;
     }
 
-
+  const existanceChecker = (database, input) => {
+    return database[input];
+  }
