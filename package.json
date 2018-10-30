@@ -1,0 +1,14 @@
+{
+  "name": "tinyapp-project",
+  "version": "1.0.0",
+  "description": "TinyApp project for Lighthouse Labs",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "author": "Aaron Lai",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
