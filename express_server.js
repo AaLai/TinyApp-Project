@@ -27,7 +27,10 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // debug statement to see POST parameters
+  // console.log(req.body);
+  // console.log(req.body.longURL);
+  urlDatabase[generateRandomString()] = req.body.longURL;
+  // console.log(urlDatabase) debug statement to see POST parameters
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
 
@@ -49,12 +52,10 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
-function generateRandomString() {
-  const stringLengthMax = 6;
-  let string = ''
 
   function generateRandomString() {
     let r = Math.random().toString(36).substring(7);
       return r;
     }
-  }
+
+
