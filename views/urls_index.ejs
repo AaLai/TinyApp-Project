@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<header>
+    <% include ./partials/_header %>
+</header>
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <ul>
+      <% for (thing in urls) { %>
+      <li> <%= `Shortform ${thing} for site ${urls[thing]}` %>(href='#') </li>
+    <% }; %>
+
+
+</body>
+</html>
