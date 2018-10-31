@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase,
                        user: users,
-                       login: req.cookies['Kow']
+                       login: req.cookies['user_id']
                      };
   res.render("urls_index", templateVars);
 });
@@ -49,7 +49,8 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = { user: users };
+  let templateVars = { user: users ,
+                       login: req.cookies['user_id']};
   res.render("urls_new", templateVars);
 });
 
@@ -61,7 +62,7 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = { shortURL: req.params.id,
                        url: urlDatabase,
                        user: users,
-                       login: req.cookies['Kow']
+                       login: req.cookies['user_id']
                      };
   res.render("urls_show", templateVars);
 });
@@ -94,19 +95,25 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/login", (req, res) => {
   let templateVars = { user: users,
                        url: urlDatabase,
-                       login: req.cookies['Kow']
+                       login: req.cookies['user_id']
   }
   res.render("urls_login", templateVars)
 })
 
 app.post("/login", (req, res) => {
-  res.cookie('Kow', req.body.email)
-  res.redirect('/urls');
+  if (!req.body.email || !req.body.password) {
+    res.send('400 Error: Are you sure everything is filled in?');
+  }else if (!specificFilter(users, req.body.email, req.body.password, 'email', 'password')) {
+    res.send('400 something didn\'t work out, try again!')
+  } else {
+    res.cookie('user_id', filter(users, req.body.email, 'email', 'id'));
+    res.redirect('/urls');
+  }
 })
 
 
 app.post("/logout", (req, res) => {
-  res.clearCookie('Kow');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 })
 
@@ -119,7 +126,7 @@ app.get("/hello", (req, res) => {
 app.get("/register", (req, res) => {
   let templateVars = { url: urlDatabase,
                        user: users,
-                       login: req.cookies['Kow']
+                       login: req.cookies['user_id']
                      };
   res.render("urls_reg", templateVars);
 });
@@ -136,7 +143,7 @@ app.post("/register", (req, res) => {
                           password: req.body.password
                         };
                         // console.log(users)
-    res.cookie('Kow', req.body.email);
+    res.cookie('user_id', randomID);
     res.redirect("/urls");
   } else {
     let randomID2 = generateRandomString();
@@ -145,7 +152,7 @@ app.post("/register", (req, res) => {
                            password: req.body.password
                          };
                          // console.log(users)
-    res.cookie('Kow', req.body.email);
+    res.cookie('user_id', randomID2);
     res.redirect("/urls");
 
   }
@@ -182,3 +189,22 @@ app.listen(PORT, () => {
     return isItThere;
   }
 
+  const filter = (object, checkAgainst, input, output) => {
+    let thing = '';
+      for (let x in object) {
+        if (object[x][input] == checkAgainst) {
+          thing = object[x][output];
+        }
+      }
+    return thing;
+  }
+
+  const specificFilter = (object, checkAgainst1, checkAgainst2, input1, input2) => {
+    let filter = false;
+    for (let x in object) {
+      if (object[x][input1] == checkAgainst1 && object[x][input2] == checkAgainst2) {
+        filter = true;
+      }
+    }
+    return filter;
+  }

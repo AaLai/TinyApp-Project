@@ -8,7 +8,7 @@
 
   <% } else { %>
       <form action="/logout" method="POST" style="margin:20px;">
-        <label for="username"> Welcome <%= login %> &emsp;</label>
+        <label for="username"> Welcome <%= user[login].email %> &emsp;</label>
         <input type="submit" value="Logout">
       </form>
     <% } %>
