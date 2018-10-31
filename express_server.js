@@ -117,7 +117,8 @@ app.post("/register", (req, res) => {
   let randomID = generateRandomString();
   if (!req.body.email || !req.body.password) {
     res.send("400 Bad Request: Make sure both fields are filled in!");
-  } else if () {
+  } else if (inObjectChecker(users, req.body.email, 'email')) {
+    res.send("400 Bad Request: email already taken");
   } else if (!users[randomID]) {
       users[randomID] = { id: randomID,
                           email: req.body.email,
@@ -159,3 +160,14 @@ app.listen(PORT, () => {
       return database[input];
     }
   }
+
+  const inObjectChecker = (object, checkAgainst, input) => {
+    let isItThere = false;
+    for (let x in object) {
+      if (object[x][input] == checkAgainst) {
+        isItThere = true;
+      }
+    }
+    return isItThere;
+  }
+
