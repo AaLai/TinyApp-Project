@@ -4,7 +4,8 @@
   "description": "TinyApp project for Lighthouse Labs",
   "main": "index.js",
   "scripts": {
-    "test": "start"
+    "start": "./node_modules/.bin/nodemon -L express_server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aaron Lai",
   "license": "ISC",
