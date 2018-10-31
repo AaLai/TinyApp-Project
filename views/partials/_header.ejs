@@ -1,1 +1,13 @@
-Testing this header!
+  <% if (!username) { %>
+    <form action="/login" method="POST" style="margin:20px;">
+      <label for="username">Name: </label>
+      <input id="username" type="text" name="username" placeholder="username" style="width: 150px">
+      <input type="submit" value="Login">
+    </form>
+
+  <% } else { %>
+      <form action="/logout" method="POST" style="margin:20px;">
+        <label for="username"> Welcome <%= username %> &emsp;</label>
+        <input type="submit" value="Logout">
+      </form>
+    <% } %>

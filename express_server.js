@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require('cookie-parser')
 const app = express();
 const bodyParser = require("body-parser");
 const PORT = 8080; // default port 8080
@@ -6,7 +7,7 @@ const PORT = 8080; // default port 8080
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
-
+app.use(cookieParser());
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -18,7 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase,
+                       username: req.cookies["Kow"]
+                     };
   res.render("urls_index", templateVars);
 });
 
@@ -32,7 +35,8 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = { username: req.cookies["Kow"]};
+  res.render("urls_new", templateVars);
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -47,7 +51,9 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   let templateVars = { shortURL: req.params.id,
-                       url: urlDatabase };
+                       url: urlDatabase,
+                       username: req.cookies["Kow"]
+                     };
   res.render("urls_show", templateVars);
 });
 
@@ -67,6 +73,16 @@ app.post("/urls/:id/delete", (req, res) => {
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
+
+app.post("/login", (req, res) => {
+  res.cookie('Kow', req.body.username)
+  res.redirect('/urls');
+})
+
+app.post("/logout", (req, res) => {
+  res.clearCookie('Kow');
+  res.redirect('/urls');
+})
 
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
