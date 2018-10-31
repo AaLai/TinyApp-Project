@@ -22,10 +22,6 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
-});
-
 app.post("/urls", (req, res) => {
   var randString = generateRandomString();
   // console.log(req.body);
@@ -33,7 +29,10 @@ app.post("/urls", (req, res) => {
   urlDatabase[randString] = req.body.longURL;
   // console.log(urlDatabase)   //debug statement!
   res.redirect(`/urls/${randString}`);
+});
 
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
 });
 
 app.get("/u/:shortURL", (req, res) => {
@@ -51,6 +50,13 @@ app.get("/urls/:id", (req, res) => {
                        longURL: urlDatabase };
   res.render("urls_show", templateVars);
 });
+
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect('/urls');
+  // console.log(urlDatabase);
+});
+
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);

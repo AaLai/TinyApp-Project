@@ -9,9 +9,11 @@
 <body>
     <ul>
       <% for (thing in urls) { %>
-      <li> <%= `Shortform ${thing} for site ${urls[thing]}` %>(href='#') </li>
-    <% }; %>
-
+      <li> <%= thing %> ---> <a href = '<%= urls[thing] %>'> <%= urls[thing] %> </a> </li>
+        <form method="POST" action= '/urls/<%= thing %>/delete'>
+          <input type="submit" value="Delete">
+        </form>
+      <% }; %>
 
 </body>
 </html>
