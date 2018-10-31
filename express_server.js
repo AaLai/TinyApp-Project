@@ -33,7 +33,8 @@ app.get("/", (req, res) => {
 
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase,
-                       username: req.cookies["Kow"]
+                       user: users,
+                       login: req.cookies['Kow']
                      };
   res.render("urls_index", templateVars);
 });
@@ -48,7 +49,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = { username: req.cookies["Kow"]};
+  let templateVars = { user: users };
   res.render("urls_new", templateVars);
 });
 
@@ -59,7 +60,8 @@ app.get("/urls.json", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   let templateVars = { shortURL: req.params.id,
                        url: urlDatabase,
-                       username: req.cookies["Kow"]
+                       user: users,
+                       login: req.cookies['Kow']
                      };
   res.render("urls_show", templateVars);
 });
@@ -89,8 +91,16 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 
+app.get("/login", (req, res) => {
+  let templateVars = { user: users,
+                       url: urlDatabase,
+                       login: req.cookies['Kow']
+  }
+  res.render("urls_login", templateVars)
+})
+
 app.post("/login", (req, res) => {
-  res.cookie('Kow', req.body.username)
+  res.cookie('Kow', req.body.email)
   res.redirect('/urls');
 })
 
@@ -108,7 +118,8 @@ app.get("/hello", (req, res) => {
 
 app.get("/register", (req, res) => {
   let templateVars = { url: urlDatabase,
-                       username: req.cookies['Kow']
+                       user: users,
+                       login: req.cookies['Kow']
                      };
   res.render("urls_reg", templateVars);
 });

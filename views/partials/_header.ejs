@@ -1,13 +1,14 @@
-  <% if (!username) { %>
-    <form action="/login" method="POST" style="margin:20px;">
-      <label for="username">Name: </label>
-      <input id="username" type="text" name="username" placeholder="username" style="width: 150px">
+  <% if (!login) { %>
+    <form action="/login" method="GET" style="margin:20px;">
       <input type="submit" value="Login">
+    </form>
+     <form action="/register" method="GET" style="margin:20px;">
+      <input type="submit" value="Register">
     </form>
 
   <% } else { %>
       <form action="/logout" method="POST" style="margin:20px;">
-        <label for="username"> Welcome <%= username %> &emsp;</label>
+        <label for="username"> Welcome <%= login %> &emsp;</label>
         <input type="submit" value="Logout">
       </form>
     <% } %>
