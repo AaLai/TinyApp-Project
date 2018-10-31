@@ -49,9 +49,13 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  if (!req.cookies['user_id']) {
+    res.redirect('/login');
+  } else {
   let templateVars = { user: users ,
                        login: req.cookies['user_id']};
   res.render("urls_new", templateVars);
+  }
 });
 
 app.get("/urls.json", (req, res) => {
@@ -83,7 +87,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   if (!existanceChecker(urlDatabase, req.params.shortURL)) {
-    res.send(`404 error, this doesn't exist yet! I do like your ${req.params.shortURL} though!`);
+    res.send(`404 error, this doesn't exist yet! I do like what you did with ${req.params.shortURL} though!`);
   } else {
     let longURL = urlDatabase[req.params.shortURL];
   // console.log(longURL);  // debug statement!
