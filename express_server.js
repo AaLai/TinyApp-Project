@@ -27,13 +27,15 @@ const users = {
   }
 }
 
-const urlDatabase = { userRandomID: {
-                            "b2xVn2": "http://www.lighthouselabs.ca",
-                            "9sm5xK": "http://www.google.com"
-                            },
-                      user2RandomID: {
-                            "testme": "https://mangadex.org"
-                            }
+const urlDatabase = { "b2xVn2": { 'user_id' : 'userRandomID',
+                                  'longurl' : 'http://www.lighthouselabs.ca'
+                                },
+                      "9sm5xK": { 'user_id' : 'userRandomID',
+                                  'longurl' : 'http://www.google.com'
+                                },
+                      "testme": { 'user_id' : 'user2RandomID',
+                                  'longurl' : 'https://mangadex.org'
+                                }
                     };
 
 app.get("/", (req, res) => {
@@ -52,7 +54,8 @@ app.post("/urls", (req, res) => {
   var randString = generateRandomString();
   // console.log(req.body);
   // console.log(req.body.longURL);
-  urlDatabase[req.session.user_id][randString] = req.body.longURL;
+  urlDatabase[randString] = { longurl : req.body.longURL };
+  urlDatabase[randString].user_id = req.session.user_id ;
   // console.log(urlDatabase)   //debug statement!
   res.redirect(`/urls/${randString}`);
 });
@@ -78,28 +81,40 @@ app.get("/urls/:id", (req, res) => {
                        user: users,
                        login: req.session.user_id
                      };
-  res.render("urls_show", templateVars);
+  if (req.session.user_id === urlDatabase[req.params.id].user_id) {
+    res.render("urls_show", templateVars);
+  } else {
+    res.redirect('/urls')
+  }
 });
 
 app.post("/urls/:id/update", (req, res) => {
   // console.log(req.body.longURLUpdate);
-  urlDatabase[req.session.user_id][req.params.id] = req.body.longURLUpdate;
-  res.redirect('/urls');
+  if (req.session.user_id === urlDatabase[req.params.id].user_id) {
+    urlDatabase[req.params.id].longurl = req.body.longURLUpdate;
+    res.redirect('/urls');
+  } else {
+    res.redirect('/urls');
+  }
 })
 
 app.post("/urls/:id/delete", (req, res) => {
-  delete urlDatabase[req.params.id];
-  res.redirect('/urls');
+  if (req.session.user_id === urlDatabase[req.params.id].user_id) {
+    delete urlDatabase[req.params.id];
+    res.redirect('/urls');
+  } else {
+    res.redirect('/urls');
+  }
   // console.log(urlDatabase);
 });
 
 
 
 app.get("/u/:shortURL", (req, res) => {
-  if (filter(urlDatabase, req.params.shortURL, null, req.params.shortURL) === false) {
+  if (!urlDatabase[req.params.shortURL]) {
     res.send(`404 error, this doesn't exist yet! I do like what you did with ${req.params.shortURL} though!`);
   } else {
-    let longURL = filter(urlDatabase, req.params.shortURL, null, req.params.shortURL);
+    let longURL = urlDatabase[req.params.shortURL].longurl;
   // console.log(longURL);  // debug statement!
     res.redirect(longURL);
   }
@@ -113,7 +128,7 @@ app.get("/login", (req, res) => {
   }
   if (!req.session.user_id) {
     res.render("urls_login", templateVars);
-  } else if (req.session.user_id === users[req.session.user_id].id ) {
+  } else if (req.session.user_id === users[req.session.user_id] ) {
     res.redirect('/urls');
   } else {
     res.render("urls_login", templateVars)
@@ -171,7 +186,6 @@ app.post("/register", (req, res) => {
                           email: req.body.email,
                           password: bcrypt.hashSync(req.body.password, 10)
                         };
-      urlDatabase[randomID] = {};
                         // console.log(users)
     req.session.user_id = randomID;
     res.redirect("/urls");
@@ -181,7 +195,6 @@ app.post("/register", (req, res) => {
                            email: req.body.email,
                            password: bcrypt.hashSync(req.body.password, 10)
                          };
-      urlDatabase[randomID2] = {};
                          // console.log(users)
     req.session.user_id = randomID2;
     res.redirect("/urls");

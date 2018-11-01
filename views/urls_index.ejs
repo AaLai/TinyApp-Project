@@ -8,10 +8,12 @@
 </head>
 <body>
     <ul>
-      <% for (thing in urls[login]) { %>
-      <li> <%= thing %> ---> <a href = '<%= urls[login][thing] %>'> <%= urls[login][thing] %> </a> &emsp; <a href = /urls/<%= thing %>> Edit </a> &emsp;  <form method="POST" action= '/urls/<%= thing %>/delete'>
+      <% for (shortUrl in urls) { %>
+        <% if (urls[shortUrl].user_id === login) { %>
+      <li> <%= shortUrl %> ---> <a href = '<%= urls[shortUrl].longurl %>'> <%= urls[shortUrl].longurl %> </a> &emsp; <a href = /urls/<%= shortUrl %>> Edit </a> &emsp;  <form method="POST" action= '/urls/<%= shortUrl %>/delete'>
           <input type="submit" value="Delete">
         </form></li>
+        <% } %>
 
       <% }; %>
     </ul>

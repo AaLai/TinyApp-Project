@@ -1,4 +1,5 @@
-  <% if (!login || !urls[login]) { %>
+
+  <% if ((!login) || (!user[login])) { %>
     <form action="/login" method="GET" style="margin:20px;">
       <input type="submit" value="Login">
     </form>
