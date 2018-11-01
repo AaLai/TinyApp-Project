@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const PORT = 8080; // default port 8080
 
+const bcrypt = require('bcrypt');
+
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended:true}));
@@ -116,10 +118,11 @@ app.get("/login", (req, res) => {
 })
 
 app.post("/login", (req, res) => {
+  let userPassword = bcrypt.compareSync(req.body.password, filter(users, req.body.email, 'email', 'password'))
   if (!req.body.email || !req.body.password) {
     res.send('400 Error: already you sure everything is filled in?');
-  }else if (!specificFilter(users, req.body.email, req.body.password, 'email', 'password')) {
-    res.send('400 something didn\'t work out, try again!')
+  } else if (!userPassword) {
+    res.send('400 something didn\'t work out, try again!');
   } else if (!req.cookies['user_id']) {
     res.cookie('user_id', filter(users, req.body.email, 'email', 'id'));
     res.redirect('/urls');
@@ -131,6 +134,12 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id');
+  res.redirect('/urls');
+})
+
+app.get("/debug", (req, res) => {
+  console.log(users);
+  console.log(urlDatabase);
   res.redirect('/urls');
 })
 
@@ -153,11 +162,11 @@ app.post("/register", (req, res) => {
   if (!req.body.email || !req.body.password) {
     res.send("400 Bad Request: Make sure both fields are filled in!");
   } else if (inObjectChecker(users, req.body.email, 'email')) {
-    res.send("400 Bad Request: email already taken");
+    res.send("400 Bad Request");
   } else if (!users[randomID]) {
       users[randomID] = { id: randomID,
                           email: req.body.email,
-                          password: req.body.password
+                          password: bcrypt.hashSync(req.body.password, 10)
                         };
       urlDatabase[randomID] = {};
                         // console.log(users)
@@ -167,7 +176,7 @@ app.post("/register", (req, res) => {
     let randomID2 = generateRandomString();
       users[randomID2] = { id: randomID2,
                            email: req.body.email,
-                           password: req.body.password
+                           password: bcrypt.hashSync(req.body.password, 10)
                          };
       urlDatabase[randomID2] = {};
                          // console.log(users)

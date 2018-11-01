@@ -9,7 +9,7 @@
 <body>
     <ul>
       <% for (thing in urls[login]) { %>
-      <li> <%= thing %> ---> <a href = '<%= urls[thing] %>'> <%= urls[login][thing] %> </a> &emsp; <a href = /urls/<%= thing %>> Edit </a> &emsp;  <form method="POST" action= '/urls/<%= thing %>/delete'>
+      <li> <%= thing %> ---> <a href = '<%= urls[login][thing] %>'> <%= urls[login][thing] %> </a> &emsp; <a href = /urls/<%= thing %>> Edit </a> &emsp;  <form method="POST" action= '/urls/<%= thing %>/delete'>
           <input type="submit" value="Delete">
         </form></li>
 
