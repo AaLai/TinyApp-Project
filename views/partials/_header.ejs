@@ -1,17 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
 
   <% if ((!login) || (!user[login])) { %>
-    <form action="/login" method="GET" style="margin:20px;">
-      <input type="submit" value="Login">
-    </form>
-     <form action="/register" method="GET" style="margin:20px;">
-      <input type="submit" value="Register">
-    </form>
+
+  <h2> Welcome to tinyApp (> ^^)> </h2>
+  <input type="button" onclick="location.href='/urls';" value="Home" /> &emsp; <input type="button" onclick="location.href='/login';" value="Login" />  &emsp; <input type="button" onclick="location.href='/register';" value="Register" />
 
   <% } else { %>
-      <form action="/logout" method="POST" style="margin:20px;">
-        <label for="username"> Welcome <%= user[login].email %> &emsp;</label>
-        <input type="submit" value="Logout">
-      </form>
-    <% } %>
 
-  <input type="button" onclick="location.href='/urls';" value="Home" /> &emsp; <input type="button" onclick="location.href='/urls/new';" value="Make a new shortURL" />
+    <form action="/logout" method="POST" style="margin:20px;">
+      <label for="username"> Welcome <%= user[login].email %> &emsp;</label>
+      <input type="submit" value="Logout">
+    </form>
+    <input type="button" onclick="location.href='/urls';" value="Home" />
+    &emsp;  <input type="button" onclick="location.href='/urls/new';" value="Make a new shortURL" />
+  <% } %>
+

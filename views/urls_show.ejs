@@ -7,13 +7,13 @@
   <title>TinyApp</title>
 </head>
 <body>
-      <li><h1> ShortURL: <%= shortURL %> </h1>
+      <h1> ShortURL: <%= shortURL %> </h1>
         <form action="/urls/<%= shortURL %>/update" method="POST" >
           <label for="longURLUpdate">Enter a URL to Update:</label>
           <input id="longURLUpdate" type="text" name="longURLUpdate"placeholder="<%= urls[shortURL].longurl %>" >
           <input type="submit" value="Update">
         </form>
-      </li>
+
 
 </body>
 </html>

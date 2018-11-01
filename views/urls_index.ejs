@@ -13,6 +13,7 @@
       <li> <%= shortUrl %> ---> <a href = '<%= urls[shortUrl].longurl %>'> <%= urls[shortUrl].longurl %> </a> &emsp; <a href = /urls/<%= shortUrl %>> Edit </a> &emsp;  <form method="POST" action= '/urls/<%= shortUrl %>/delete'>
           <input type="submit" value="Delete">
         </form></li>
+        <br>
         <% } %>
 
       <% }; %>
