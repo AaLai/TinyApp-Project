@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <form action="/login" method="POST" style="margin:20px;">
+      <label for="email">Email: </label>
+      <input id="email" type="email" name="email" placeholder="moo@cows.ca" style="width: 150px">
+
+      <label for="password">Password: </label>
+      <input id="password" type="password" name="password" placeholder="Password" style="width: 150px">
+
+      <input type="submit" value="Login">
+    </form>
+
+    Don't have an account? <input type="button" onclick="location.href='/register';" value="Register" />
+</body>
+</html>
