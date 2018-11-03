@@ -13,7 +13,7 @@
     <ul>
       <% for (shortUrl in urls) { %>
         <% if (urls[shortUrl].user_id === login) { %>
-          <li>
+          <h4>
             <%= shortUrl %> --->
             <a href = '<%= urls[shortUrl].longurl %>'>
               <%= urls[shortUrl].longurl %>
@@ -21,6 +21,7 @@
             &emsp;
             <a href = /urls/<%= shortUrl %>> Edit </a>
             &emsp;
+          </h4>
             <form method="POST" action= '/urls/<%= shortUrl %>/delete'>
               <input type="submit" value="Delete">
             </form>

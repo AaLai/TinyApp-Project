@@ -2,17 +2,21 @@
 <html lang="en">
 
   <% if ((!login) || (!user[login])) { %>
-    <h2> Welcome to tinyApp (> ^^)> </h2>
+    <h2>
+      Welcome to tinyApp (> ^^)>
+    </h2>
       <input type="button" onclick="location.href='/urls';" value="Home" />
       &emsp;
       <input type="button" onclick="location.href='/login';" value="Login" />
       &emsp;
       <input type="button" onclick="location.href='/register';" value="Register" />
   <% } else { %>
+    <h2>
       <form action="/logout" method="POST" style="margin:20px;">
         <label for="username"> Welcome <%= user[login].email %> &emsp;</label>
           <input type="submit" value="Logout">
       </form>
+    </h2>
       <input type="button" onclick="location.href='/urls';" value="Home" />
       &emsp;
       <input type="button" onclick="location.href='/urls/new';" value="Make a new shortURL" />

@@ -224,13 +224,6 @@ app.post("/register", (req, res) => {
   }
 });
 
-// --- Debug console logger
-// app.get("/debug", (req, res) => {
-//   console.log(users);
-//   console.log(urlDatabase);
-//   res.redirect('/');
-// });
-
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
