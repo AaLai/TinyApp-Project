@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- URL editing page -->
+
 <header>
-    <% include ./partials/_header %>
+  <% include ./partials/_header %>
 </header>
+
 <head>
   <title>TinyApp</title>
 </head>
+
 <body>
-      <h1> ShortURL: <%= shortURL %> </h1>
-        <form action="/urls/<%= shortURL %>/update" method="POST" >
-          <label for="longURLUpdate">Enter a URL to Update:</label>
+  <h1> ShortURL: <%= shortURL %> </h1>
+    <h3> Current Destination for this shortURL is <%= urls[shortURL].longurl %>. </h3>
+      <form action="/urls/<%= shortURL %>" method="POST" >
+        <label for="longURLUpdate">Enter a URL to Update:</label>
           <input id="longURLUpdate" type="text" name="longURLUpdate"placeholder="<%= urls[shortURL].longurl %>" >
           <input type="submit" value="Update">
-        </form>
-
+      </form>
 
 </body>
+
 </html>
